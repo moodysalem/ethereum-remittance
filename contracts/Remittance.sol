@@ -1,13 +1,13 @@
 pragma solidity ^0.4.15;
 
 contract Remittance {
-    uint constant SEVEN_DAYS = (7 * 24 * 60 * 60 / 15);
+    uint constant SEVEN_DAYS_IN_BLOCKS = 7 days / 15;
 
     struct RemittanceStruct {
         address owner;
         uint owed;
         uint blockDeadline;
-    }
+    }   
 
     event LogRemittanceCreated(address recipient, uint value, uint deadline);
     event LogRemittanceWithdrawn(address recipient, uint value);
@@ -23,7 +23,7 @@ contract Remittance {
         require(msg.value > 0);
 
         // limit the deadline to be no greater than 7 days worth of blocks
-        require(blocksToDeadline < SEVEN_DAYS);
+        require(blocksToDeadline < SEVEN_DAYS_IN_BLOCKS);
 
         bytes32 key = keccak256(recipient, keccak256HashedPassword);
 
